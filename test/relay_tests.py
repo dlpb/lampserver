@@ -1,17 +1,38 @@
 import unittest
 
 
+
+
+class MockRelay:
+
+    __state__ = False
+
+    def on(self):
+        self.__state__ = True
+
+    def state(self):
+        return self.__state__
+
+
 class RelayBoard:
-    def blah(self):
-        return False
+
+    one = MockRelay()
+
+    # def blah(self):
+    #     return False
 
 
 # Here's our "unit tests".
-class IsOddTests(unittest.TestCase):
+class RelayBoardTests(unittest.TestCase):
 
-    def testOne(self):
+    def testWhenCreatingNewRelayOne_stateIsOff(self):
         relay = RelayBoard()
-        self.assertFalse(relay.blah())
+        self.assertFalse(relay.one.state())
+
+    def test_GivenNewRelayOne_whenTurningOn_relayIsOn(self):
+        relay = RelayBoard()
+        relay.one.on()
+        self.assertTrue(relay.one.state())
 
 
 def main():
