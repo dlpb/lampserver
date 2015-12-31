@@ -36,7 +36,14 @@ class SignalCollection:
         self.pigear = pigear
 
     def state(self):
-        return self.lamp.state() or self.pigear.state()
+        if self.lamp.state() and self.pigear.state():
+            return SignalState.on
+        elif self.lamp.state() and not self.pigear.state():
+            return SignalState.lampOnly
+        elif not self.lamp.state() and self.pigear.state():
+            return SignalState.pigearOnly
+        else:
+            return SignalState.off
 
     def on(self):
         self.lamp.on()
@@ -62,13 +69,13 @@ class SignalBoardTests(unittest.TestCase):
         red = SignalCollection(Signal(MockRelay()), Signal(MockRelay()))
         green = None
         signals = SignalBoard(red, green)
-        self.assertFalse(signals.red.state())
+        self.assertEqual(signals.red.state(), SignalState.off)
 
     def testWhenCreatingSignalBoard_greenLightsAreOff(self):
         red = None
         green = SignalCollection(Signal(MockRelay()), Signal(MockRelay()))
         signals = SignalBoard(red, green)
-        self.assertFalse(signals.green.state())
+        self.assertEquals(signals.green.state(), SignalState.off)
 
     def testWhenRedSignalIsOff_allRedLightsCanBeTurnedOn(self):
         redLampRelay = MockRelay()
@@ -76,12 +83,12 @@ class SignalBoardTests(unittest.TestCase):
         red = SignalCollection(Signal(redLampRelay), Signal(redPigearRelay))
         green = None
         signals = SignalBoard(red, green)
-        self.assertFalse(signals.red.state())
+        self.assertEquals(signals.red.state(), SignalState.off)
         self.assertFalse(redLampRelay.state())
         self.assertFalse(redPigearRelay.state())
 
         signals.red.on()
-        self.assertTrue(signals.red.state())
+        self.assertEquals(signals.red.state(), SignalState.on)
         self.assertTrue(redLampRelay.state())
         self.assertTrue(redPigearRelay.state())
 
@@ -93,12 +100,12 @@ class SignalBoardTests(unittest.TestCase):
         signals = SignalBoard(red, green)
 
         signals.red.on()
-        self.assertTrue(signals.red.state())
+        self.assertEquals(signals.red.state(), SignalState.on)
         self.assertTrue(redLampRelay.state())
         self.assertTrue(redPigearRelay.state())
 
         signals.red.off()
-        self.assertFalse(signals.red.state())
+        self.assertEquals(signals.red.state(), SignalState.off)
         self.assertFalse(redLampRelay.state())
         self.assertFalse(redPigearRelay.state())
 
@@ -110,7 +117,7 @@ class SignalBoardTests(unittest.TestCase):
         signals = SignalBoard(red, green)
 
         signals.red.lamp.on()
-        self.assertTrue(signals.red.state())
+        self.assertEquals(signals.red.state(), SignalState.lampOnly)
         self.assertTrue(redLampRelay.state())
         self.assertFalse(redPigearRelay.state())
 
@@ -122,11 +129,11 @@ class SignalBoardTests(unittest.TestCase):
         signals = SignalBoard(red, green)
 
         signals.red.pigear.on()
-        self.assertTrue(signals.red.state())
+        self.assertEquals(signals.red.state(), SignalState.pigearOnly)
         self.assertTrue(redPigearRelay.state())
         self.assertFalse(redLampRelay.state())
 
-
+    
 
 
 def main():
