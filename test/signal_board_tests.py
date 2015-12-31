@@ -1,5 +1,14 @@
 import unittest
 from mockrelay import *
+from enum import Enum
+
+
+class SignalState(Enum):
+    off = 1
+    lampOnly = 2
+    pigearOnly = 4
+    on = 8
+
 
 class Signal:
     relay = None
@@ -15,7 +24,6 @@ class Signal:
 
     def off(self):
         self.relay.off()
-
 
 
 class SignalCollection:
