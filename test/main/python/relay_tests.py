@@ -1,5 +1,6 @@
 import unittest
-from relayboard import *
+
+from main.python.relayboard import *
 from mockrelay import *
 
 
@@ -70,7 +71,28 @@ class RelayBoardTests(unittest.TestCase):
         relay.four.off()
         self.assertEqual(relay.four.state(), RelayState.off)
 
+    def test_whenCreatingNewRelayBoard_itInitialisesAllRelaysToOff(self):
 
+        class RecordOffRelay:
+            wasOffCalled = False
+
+            def off(self):
+                self.wasOffCalled = True
+
+            def hasOffBeenCalled(self):
+                return self.wasOffCalled
+
+        one = RecordOffRelay()
+        two = RecordOffRelay()
+        three = RecordOffRelay()
+        four = RecordOffRelay()
+
+        RelayBoard(one, two, three, four)
+
+        self.assertTrue(one.hasOffBeenCalled())
+        self.assertTrue(two.hasOffBeenCalled())
+        self.assertTrue(three.hasOffBeenCalled)
+        self.assertTrue(four.hasOffBeenCalled())
 
 
 def main():
