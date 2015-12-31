@@ -1,4 +1,5 @@
 class SignalLight:
+
     relay = None
 
     def __init__(self, relay):
