@@ -28,7 +28,7 @@ class SignalCollection:
         self.pigear = pigear
 
     def state(self):
-        return self.lamp.state() and self.pigear.state()
+        return self.lamp.state() or self.pigear.state()
 
     def on(self):
         self.lamp.on()
@@ -94,9 +94,29 @@ class SignalBoardTests(unittest.TestCase):
         self.assertFalse(redLampRelay.state())
         self.assertFalse(redPigearRelay.state())
 
+    def testWhenRedSignalsAreOff_redLampOnlyCanBeTurnedOn(self):
+        redLampRelay = MockRelay()
+        redPigearRelay = MockRelay()
+        red = SignalCollection(Signal(redLampRelay), Signal(redPigearRelay))
+        green = None
+        signals = SignalBoard(red, green)
 
+        signals.red.lamp.on()
+        self.assertTrue(signals.red.state())
+        self.assertTrue(redLampRelay.state())
+        self.assertFalse(redPigearRelay.state())
 
+    def testWhenRedSignalsAreOff_redPigearOnlyCanBeTurnedOn(self):
+        redLampRelay = MockRelay()
+        redPigearRelay = MockRelay()
+        red = SignalCollection(Signal(redLampRelay), Signal(redPigearRelay))
+        green = None
+        signals = SignalBoard(red, green)
 
+        signals.red.pigear.on()
+        self.assertTrue(signals.red.state())
+        self.assertTrue(redPigearRelay.state())
+        self.assertFalse(redLampRelay.state())
 
 
 
