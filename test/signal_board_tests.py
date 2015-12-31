@@ -1,5 +1,5 @@
 import unittest
-
+from mockrelay import *
 
 class Signal:
     relay = None
@@ -8,7 +8,10 @@ class Signal:
         self.relay = relay
 
     def state(self):
-        return False
+        return self.relay.state()
+
+    def on(self):
+        self.relay.on()
 
 
 
@@ -23,6 +26,10 @@ class SignalCollection:
 
     def state(self):
         return self.lamp.state() and self.pigear.state()
+
+    def on(self):
+        self.lamp.on()
+        self.pigear.on()
 
 
 class SignalBoard:
@@ -39,10 +46,22 @@ class SignalBoardTests(unittest.TestCase):
     def testWhenCreatingSignalBoard_redLightsAreOff(self):
 
         red = SignalCollection(Signal(None), Signal(None))
-        green = SignalCollection(Signal(None), Signal(None))
+        green = None
         signals = SignalBoard(red, green)
         self.assertFalse(signals.red.state())
 
+    def testWhenCreatingSignalBoard_greenLightsAreOff(self):
+        red = None
+        green = SignalCollection(Signal(None), Signal(None))
+        signals = SignalBoard(red, green)
+        self.assertFalse(signals.green.state())
+
+    def testWhenRedSignalIsOff_allRedLightsCanBeTurnedOn(self):
+        red = SignalCollection(Signal(MockRelay()), Signal(MockRelay()))
+        green = None
+        signals = SignalBoard(red, green)
+        signals.red.on()
+        self.assertTrue(signals.red.state())
 
 
 

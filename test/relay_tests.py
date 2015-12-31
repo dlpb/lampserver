@@ -1,36 +1,6 @@
 import unittest
-
-
-class MockRelay:
-
-    __state__ = False
-
-    def on(self):
-        self.__state__ = True
-
-    def off(self):
-        self.__state__ = False
-
-    def state(self):
-        return self.__state__
-
-
-class RelayBoard:
-
-    one = None
-    two = None
-    three = None
-    four = None
-
-    def __init__(self, relay_one, relay_two, relay_three, relay_four):
-        self.one = relay_one
-        self.two = relay_two
-        self.three = relay_three
-        self.four = relay_four
-
-    # def blah(self):
-    #     return False
-
+from relayboard import *
+from mockrelay import *
 
 # Here's our "unit tests".
 class RelayBoardTests(unittest.TestCase):
