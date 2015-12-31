@@ -1,12 +1,15 @@
+from relaystate import *
+
 class MockRelay:
 
-    __state__ = False
+    __state__ = RelayState.off
 
     def on(self):
-        self.__state__ = True
+        self.__state__ = RelayState.on
 
     def off(self):
-        self.__state__ = False
+        self.__state__ = RelayState.off
 
     def state(self):
         return self.__state__
+
