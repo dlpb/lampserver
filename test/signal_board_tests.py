@@ -133,7 +133,49 @@ class SignalBoardTests(unittest.TestCase):
         self.assertTrue(redPigearRelay.state())
         self.assertFalse(redLampRelay.state())
 
-    
+    def testWhenGreenSignalIsOff_allGreenLightsCanBeTurnedOn(self):
+        greenLampRelay = MockRelay()
+        greenPigearRelay = MockRelay()
+        red = None
+        green = SignalCollection(Signal(greenLampRelay), Signal(greenPigearRelay))
+        signals = SignalBoard(red, green)
+        self.assertEquals(signals.green.state(), SignalState.off)
+
+        signals.green.on()
+        self.assertEquals(signals.green.state(), SignalState.on)
+
+    def testWhenGreenSignalIsOn_allGreenLightsCanBeTurnedOff(self):
+        greenLampRelay = MockRelay()
+        greenPigearRelay = MockRelay()
+        red = None
+        green = SignalCollection(Signal(greenLampRelay), Signal(greenPigearRelay))
+        signals = SignalBoard(red, green)
+
+        signals.green.on()
+        self.assertEquals(signals.green.state(), SignalState.on)
+
+        signals.green.off()
+        self.assertEquals(signals.green.state(), SignalState.off)
+
+    def testWhenGreenSignalsAreOff_greenLampOnlyCanBeTurnedOn(self):
+        greenLampRelay = MockRelay()
+        greenPigearRelay = MockRelay()
+        red = None
+        green = SignalCollection(Signal(greenLampRelay), Signal(greenPigearRelay))
+        signals = SignalBoard(red, green)
+
+        signals.green.lamp.on()
+        self.assertEquals(signals.green.state(), SignalState.lampOnly)
+
+    def testWhenGreenSignalsAreOff_greenPigearOnlyCanBeTurnedOn(self):
+        greenLampRelay = MockRelay()
+        greenPigearRelay = MockRelay()
+        red = None
+        green = SignalCollection(Signal(greenLampRelay), Signal(greenPigearRelay))
+        signals = SignalBoard(red, green)
+
+        signals.green.pigear.on()
+        self.assertEquals(signals.green.state(), SignalState.pigearOnly)
 
 
 def main():
