@@ -5,8 +5,10 @@ from signalstate import SignalState
 class SignalLight:
 
     relay = None
+    name = None
 
-    def __init__(self, relay):
+    def __init__(self, name, relay):
+        self.name = name
         self.relay = relay
 
     def state(self):

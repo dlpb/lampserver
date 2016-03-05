@@ -28,7 +28,7 @@ class SignalBoardTests(unittest.TestCase):
 
     def testWhenRedSignalIsOff_allRedLightsCanBeTurnedOn(self):
         redLampRelay = MockRelay()
-        red = SignalLight(redLampRelay)
+        red = SignalLight("red", redLampRelay)
         green = None
         signals = SignalBoard(red, green)
         self.assertEquals(signals.red.state(), SignalState.off)
@@ -40,7 +40,7 @@ class SignalBoardTests(unittest.TestCase):
 
     def testWhenRedSignalIsOn_allRedLightsCanBeTurnedOff(self):
         redLampRelay = MockRelay()
-        red = SignalLight(redLampRelay)
+        red = SignalLight("red", redLampRelay)
         green = None
         signals = SignalBoard(red, green)
 
@@ -52,12 +52,10 @@ class SignalBoardTests(unittest.TestCase):
         self.assertEquals(signals.red.state(), SignalState.off)
         self.assertEquals(redLampRelay.state(), RelayState.off)
 
-
-
     def testWhenGreenSignalIsOff_allGreenLightsCanBeTurnedOn(self):
         greenLampRelay = MockRelay()
         red = None
-        green = SignalLight(greenLampRelay)
+        green = SignalLight("green", greenLampRelay)
         signals = SignalBoard(red, green)
         self.assertEquals(signals.green.state(), SignalState.off)
 
@@ -67,7 +65,7 @@ class SignalBoardTests(unittest.TestCase):
     def testWhenGreenSignalIsOn_allGreenLightsCanBeTurnedOff(self):
         greenLampRelay = MockRelay()
         red = None
-        green = SignalLight(greenLampRelay)
+        green = SignalLight("green", greenLampRelay)
         signals = SignalBoard(red, green)
 
         signals.green.on()
@@ -80,8 +78,8 @@ class SignalBoardTests(unittest.TestCase):
         greenLampRelay = MockRelay()
         redLampRelay = MockRelay()
 
-        red = SignalLight(redLampRelay)
-        green = SignalLight(greenLampRelay)
+        red = SignalLight("red", redLampRelay)
+        green = SignalLight("green", greenLampRelay)
 
         signals = SignalBoard(red, green)
 
@@ -93,8 +91,8 @@ class SignalBoardTests(unittest.TestCase):
         greenLampRelay = MockRelay()
         redLampRelay = MockRelay()
 
-        red = SignalLight(redLampRelay)
-        green = SignalLight(greenLampRelay)
+        red = SignalLight("red", redLampRelay)
+        green = SignalLight("green", greenLampRelay)
 
         signals = SignalBoard(red, green)
 
@@ -102,7 +100,7 @@ class SignalBoardTests(unittest.TestCase):
         self.assertEquals(signals.red.state(), SignalState.on)
         self.assertEquals(signals.green.state(), SignalState.off)
 
-
+    
 
 
 def main():
