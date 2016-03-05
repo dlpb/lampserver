@@ -1,3 +1,4 @@
+import json
 import unittest
 
 from api import SignalAPI
@@ -13,17 +14,38 @@ class RelayBoardTests(unittest.TestCase):
     def test_givenASignalAPIWithAnOffSignal_itCanReturnJsonWithTheStateOfTheSignal(self):
         resource = SignalAPI(SignalBoard(MockRelay(), MockRelay()))
 
-        expected = """{
-            'red':{
-                'state':'off'
-            },
-            'green':{
-                'state':'off'
-            }
-        }"""
+        expected = json.dumps({
+            'red': { 'state': 'off'},
+            'green': { 'state': 'off'}
+        })
 
         self.assertEqual(resource.json(), expected)
 
+    def test_givenASignalAPI_whenTurningOnRedSignal_jsonIsUpdated(self):
+        signals = SignalBoard(MockRelay(), MockRelay())
+        resource = SignalAPI(signals)
+
+        signals.red.on()
+
+        expected = json.dumps({
+            'red': { 'state': 'on'},
+            'green': { 'state': 'off'}
+        })
+
+        self.assertEqual(resource.json(), expected)
+
+    def test_givenASignalAPI_whenTurningOnGreenSignal_jsonIsUpdated(self):
+        signals = SignalBoard(MockRelay(), MockRelay())
+        resource = SignalAPI(signals)
+
+        signals.green.on()
+
+        expected = json.dumps({
+            'red': { 'state': 'off'},
+            'green': { 'state': 'on'}
+        })
+
+        self.assertEqual(resource.json(), expected)
 
 def main():
     unittest.main()

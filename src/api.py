@@ -1,3 +1,5 @@
+import json
+
 from signalboard import SignalBoard
 
 class SignalAPI:
@@ -8,11 +10,11 @@ class SignalAPI:
         self.signals = signals
 
     def json(self):
-        return """{
-            'red':{
-                'state':'off'
+        return json.dumps({
+            'red': {
+                'state': self.signals.red.state().name
             },
-            'green':{
-                'state':'off'
+            'green': {
+                'state': self.signals.green.state().name
             }
-        }"""
+        })
