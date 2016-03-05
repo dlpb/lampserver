@@ -147,6 +147,7 @@ class RelayBoardTests(unittest.TestCase):
         self.assertEqual(SignalState.off, signals.red.state())
         self.assertEqual(SignalState.on, signals.green.state())
 
+
 class SignalAPIData(object):
     def __init__(self, name, red, green, hypermedia):
         self.name = name
