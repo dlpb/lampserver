@@ -65,7 +65,47 @@ class RelayBoardTests(unittest.TestCase):
         signals = SignalBoard(MockRelay(), MockRelay())
         resource = SignalAPI(signals)
 
-        expected = """{"colour": "red", "state": "on"}"""
+        expected = json.dumps({
+            'colour': 'red',
+            'state': 'off',
+            'hypermedia': ['/api']
+        })
+
+        self.assertTrue(resource.json(SignalColour.red).__contains__(expected))
+
+    def test_whenReturningJsonForRedSignalAndTurningItOn_correctJsonIsReturned(self):
+        signals = SignalBoard(MockRelay(), MockRelay())
+        resource = SignalAPI(signals)
+
+        signals.red.on()
+
+        expected = json.dumps({
+            'colour': 'red',
+            'state': 'on',
+            'hypermedia': ['/api']
+        })
+
+        self.assertTrue(resource.json(SignalColour.red).__contains__(expected))
+
+    def test_whenReturningJsonForGreenSignalAndTurningItOn_correctJsonIsReturned(self):
+        signals = SignalBoard(MockRelay(), MockRelay())
+        resource = SignalAPI(signals)
+
+        signals.green.on()
+
+        expected = json.dumps({
+            'colour': 'green',
+            'state': 'on',
+            'hypermedia': ['/api']
+        })
+
+        self.assertTrue(resource.json(SignalColour.green).__contains__(expected))
+
+    def test_whenReturningJsonForOneSignal_hypermediaIsIncluded(self):
+        signals = SignalBoard(MockRelay(), MockRelay())
+        resource = SignalAPI(signals)
+
+        expected = """"hypermedia": ["/api"]"""
 
         self.assertTrue(resource.json(SignalColour.red).__contains__(expected))
 

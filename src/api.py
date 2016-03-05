@@ -11,10 +11,21 @@ class SignalAPI:
     def __init__(self, signals):
         self.signals = signals
 
-    def json(self, signal = None):
-        if signal == SignalColour.red:
-            return """{"colour": "red", "state": "on"}"""
-
+    def json(self, target=None):
+        if target == SignalColour.red:
+            signal = self.signals.red
+            return json.dumps({
+                'colour': 'red',
+                'state': signal.state().name,
+                'hypermedia': ['/api']
+            })
+        elif target == SignalColour.green:
+            signal = self.signals.green
+            return json.dumps({
+                'colour': 'green',
+                'state': signal.state().name,
+                'hypermedia': ['/api']
+            })
         else:
             return json.dumps({
                 'red': {
