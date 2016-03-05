@@ -111,6 +111,41 @@ class RelayBoardTests(unittest.TestCase):
         resource.set(SignalColour.green, SignalState.on)
         self.assertEqual(SignalState.on, signals.green.state())
 
+    def test_whenGreenLampIsOn_itCanBeTurnedOff(self):
+        signals = SignalBoard(SignalLight(MockRelay()), SignalLight(MockRelay()))
+        resource = SignalAPI(signals)
+
+        signals.green.on()
+        self.assertEqual(SignalState.on, signals.green.state())
+
+        resource.set(SignalColour.green, SignalState.off)
+        self.assertEqual(SignalState.off, signals.green.state())
+
+    def test_whenRedLampIsOn_itCanBeTurnedOff(self):
+        signals = SignalBoard(SignalLight(MockRelay()), SignalLight(MockRelay()))
+        resource = SignalAPI(signals)
+
+        signals.red.on()
+        self.assertEqual(SignalState.on, signals.red.state())
+
+        resource.set(SignalColour.red, SignalState.off)
+        self.assertEqual(SignalState.off, signals.red.state())
+
+    def test_whenRedLampIsOn_whenTurningOnGreen_redIsOffAndGreenIsOn(self):
+        signals = SignalBoard(SignalLight(MockRelay()), SignalLight(MockRelay()))
+        resource = SignalAPI(signals)
+
+        # given
+        resource.set(SignalColour.red, SignalState.on)
+        self.assertEqual(SignalState.on, signals.red.state())
+        self.assertEqual(SignalState.off, signals.green.state())
+
+        # when
+        resource.set(SignalColour.green, SignalState.on)
+
+        # then
+        self.assertEqual(SignalState.off, signals.red.state())
+        self.assertEqual(SignalState.on, signals.green.state())
 
 class SignalAPIData(object):
     def __init__(self, name, red, green, hypermedia):

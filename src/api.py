@@ -1,7 +1,7 @@
 import json
 
 from signalboard import SignalBoard
-from signalstate import SignalColour
+from signalstate import SignalColour, SignalState
 
 
 class SignalAPI:
@@ -39,9 +39,20 @@ class SignalAPI:
             })
 
     def set(self, target, state):
+
+        self.signals.red.off()
+        self.signals.green.off()
+
         if target == SignalColour.red:
-            self.signals.red.on()
+            if state == SignalState.on:
+                self.signals.red.on()
+            elif state == SignalState.off:
+                self.signals.red.off()
+
         elif target == SignalColour.green:
-            self.signals.green.on()
+            if state == SignalState.on:
+                self.signals.green.on()
+            elif state == SignalState.off:
+                self.signals.green.off()
 
 
