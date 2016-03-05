@@ -7,6 +7,7 @@ from mockrelay import *
 
 # Here's our "unit tests".
 from signalboard import SignalBoard
+from signalstate import SignalColour
 
 
 class RelayBoardTests(unittest.TestCase):
@@ -59,6 +60,14 @@ class RelayBoardTests(unittest.TestCase):
         expected = """"hypermedia": ["/api", "red", "green"]"""
 
         self.assertTrue(resource.json().__contains__(expected))
+
+    def test_whenReturningJsonForOneSignal_jsonIsReturned(self):
+        signals = SignalBoard(MockRelay(), MockRelay())
+        resource = SignalAPI(signals)
+
+        expected = """{"colour": "red", "state": "on"}"""
+
+        self.assertTrue(resource.json(SignalColour.red).__contains__(expected))
 
 def main():
     unittest.main()
