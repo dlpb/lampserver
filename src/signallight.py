@@ -1,3 +1,7 @@
+from relaystate import RelayState
+from signalstate import SignalState
+
+
 class SignalLight:
 
     relay = None
@@ -6,7 +10,10 @@ class SignalLight:
         self.relay = relay
 
     def state(self):
-        return self.relay.state()
+        if self.relay.state() == RelayState.off:
+            return SignalState.off
+        elif self.relay.state() == RelayState.on:
+            return SignalState.on
 
     def on(self):
         self.relay.on()

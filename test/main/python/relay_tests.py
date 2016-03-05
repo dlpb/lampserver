@@ -39,38 +39,6 @@ class RelayBoardTests(unittest.TestCase):
         relay.two.off()
         self.assertEqual(relay.two.state(), RelayState.off)
 
-    def testWhenCreatingNewRelayThree_stateIsOff(self):
-        relay = RelayBoard(MockRelay(), MockRelay(), MockRelay(), MockRelay())
-        self.assertEqual(relay.three.state(), RelayState.off)
-
-    def test_GivenNewRelayThree_whenTurningOn_relayIsOn(self):
-        relay = RelayBoard(MockRelay(), MockRelay(), MockRelay(), MockRelay())
-        relay.three.on()
-        self.assertEqual(relay.three.state(), RelayState.on)
-
-    def test_GivenNewRelayThreeWhichIsOn_whenTurningOff_relayIsOff(self):
-        relay = RelayBoard(MockRelay(), MockRelay(), MockRelay(), MockRelay())
-        relay.three.on()
-        self.assertEqual(relay.three.state(), RelayState.on)
-        relay.three.off()
-        self.assertEqual(relay.three.state(), RelayState.off)
-
-    def testWhenCreatingNewRelayFour_stateIsOff(self):
-        relay = RelayBoard(MockRelay(), MockRelay(), MockRelay(), MockRelay())
-        self.assertEqual(relay.four.state(), RelayState.off)
-
-    def test_GivenNewRelayFour_whenTurningOn_relayIsOn(self):
-        relay = RelayBoard(MockRelay(), MockRelay(), MockRelay(), MockRelay())
-        relay.four.on()
-        self.assertEqual(relay.four.state(), RelayState.on)
-
-    def test_GivenNewRelayFourWhichIsOn_whenTurningOff_relayIsOff(self):
-        relay = RelayBoard(MockRelay(), MockRelay(), MockRelay(), MockRelay())
-        relay.four.on()
-        self.assertEqual(relay.four.state(), RelayState.on)
-        relay.four.off()
-        self.assertEqual(relay.four.state(), RelayState.off)
-
     def test_whenCreatingNewRelayBoard_itInitialisesAllRelaysToOff(self):
 
         class RecordOffRelay:
