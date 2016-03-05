@@ -13,11 +13,13 @@ class SignalAPI:
 
     def json(self, target=None):
         if target == SignalColour.red:
-            state = self.signals.red.state().name
-            return self.single_signal_json('red', state)
+            signal = self.signals.red
+            state = signal.state()
+            return self.single_signal_json(signal.colour, state)
         elif target == SignalColour.green:
-            state = self.signals.green.state().name
-            return self.single_signal_json('green', state)
+            signal = self.signals.green
+            state = signal.state()
+            return self.single_signal_json(signal.colour, state)
         else:
             return json.dumps({
                 'name': self.signals.name,
@@ -31,10 +33,10 @@ class SignalAPI:
             })
 
     @staticmethod
-    def single_signal_json(name, state):
+    def single_signal_json(colour, state):
         return json.dumps({
-            'colour': name,
-            'state': state,
+            'colour': colour.name,
+            'state': state.name,
             'hypermedia': ['/api']
         })
 
