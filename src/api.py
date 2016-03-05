@@ -39,6 +39,9 @@ class SignalAPI:
             })
 
     def set(self, target, state):
-        self.signals.green.on()
+        if target == SignalColour.red:
+            self.signals.red.on()
+        elif target == SignalColour.green:
+            self.signals.green.on()
 
 

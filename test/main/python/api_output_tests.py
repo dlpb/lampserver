@@ -38,7 +38,6 @@ class RelayBoardTests(unittest.TestCase):
         self.assertEqual(actual.red, {'state': 'on'})
         self.assertEqual(actual.green, {'state': 'off'})
 
-
     def test_givenASignalAPI_whenTurningOnGreenSignal_jsonIsUpdated(self):
         signals = SignalBoard(SignalLight(MockRelay()), SignalLight(MockRelay()))
         resource = SignalAPI(signals)
@@ -100,9 +99,18 @@ class RelayBoardTests(unittest.TestCase):
         signals = SignalBoard(SignalLight(MockRelay()), SignalLight(MockRelay()))
         resource = SignalAPI(signals)
 
+        self.assertEqual(SignalState.off, signals.red.state())
+        resource.set(SignalColour.red, SignalState.on)
+        self.assertEqual(SignalState.on, signals.red.state())
+
+    def test_whenTurningGreenLampOn_lampIsTurnedOn(self):
+        signals = SignalBoard(SignalLight(MockRelay()), SignalLight(MockRelay()))
+        resource = SignalAPI(signals)
+
         self.assertEqual(SignalState.off, signals.green.state())
         resource.set(SignalColour.green, SignalState.on)
         self.assertEqual(SignalState.on, signals.green.state())
+
 
 class SignalAPIData(object):
     def __init__(self, name, red, green, hypermedia):
@@ -110,6 +118,7 @@ class SignalAPIData(object):
         self.red = red
         self.green = green
         self.hypermedia = hypermedia
+
 
 class SingleSignalAPIData(object):
     def __init__(self, colour, state, hypermedia):
@@ -124,6 +133,7 @@ def decode_signal_api_response(response):
         return SignalAPIData(**data)
     except:
         return SingleSignalAPIData(**data)
+
 
 def main():
     unittest.main()
