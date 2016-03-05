@@ -1,5 +1,18 @@
+from signalboard import SignalBoard
+
 class SignalAPI:
+
+    signals = None
+
+    def __init__(self, signals):
+        self.signals = signals
+
     def json(self):
         return """{
-            'state':'off'
+            'red':{
+                'state':'off'
+            },
+            'green':{
+                'state':'off'
+            }
         }"""

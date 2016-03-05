@@ -2,7 +2,6 @@ import unittest
 
 from api import SignalAPI
 from mockrelay import *
-from relayboard import *
 
 
 # Here's our "unit tests".
@@ -11,15 +10,19 @@ from signalboard import SignalBoard
 
 class RelayBoardTests(unittest.TestCase):
 
-    def test_givenASignalAPI_itCanReturnJson(self):
-        resource = SignalAPI()
+    def test_givenASignalAPIWithAnOffSignal_itCanReturnJsonWithTheStateOfTheSignal(self):
+        resource = SignalAPI(SignalBoard(MockRelay(), MockRelay()))
 
         expected = """{
-            'state':'off'
+            'red':{
+                'state':'off'
+            },
+            'green':{
+                'state':'off'
+            }
         }"""
+
         self.assertEqual(resource.json(), expected)
-
-
 
 
 def main():
