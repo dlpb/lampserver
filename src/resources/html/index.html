@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+    <script src="jquery.js"></script>
+    <script src="status.js"></script>
+    <link href="reset.css" rel="stylesheet" type="text/css" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <h1>Signal Status</h1>
+    <section id="green" class="widget">
+        <div id="green-general-status" class="overview">
+            <span class="green">Off</span>
+            <button id="green-signal-button">Green Signal</button>
+        </div>
+        <div id="green-lamp-status" class="lamp summary">
+            <span class="green">Off</span>
+            <button id="green-lamp-button">Green Lamp</button>
+        </div>
+        <div id="green-pigear-status" class="pigear summary">
+            <span class="green">Off</span>
+            <button id="green-pigear-button">Green Pigear</button>
+        </div>
+    </section>
+    <section id="red" class="widget">
+        <div id="red-general-status" class="overview">
+            <span class="red">Off</span>
+            <button id="red-signal-button">Red Signal</button>
+        </div>
+        <div id="red-lamp-status" class="lamp summary">
+            <span class="red">Off</span>
+            <button id="red-lamp-button">Red Lamp</button>
+        </div>
+        <div id="red-pigear-status" class="pigear summary">
+            <span class="red">Off</span>
+            <button id="red-pigear-button">Red Pigear</button>
+        </div>
+    </section>
+</body>
+<br/>
+<a href="/signal">API</a>
+</html>

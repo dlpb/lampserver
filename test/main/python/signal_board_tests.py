@@ -1,12 +1,12 @@
 import unittest
 
+from main.python.signallight import SignalLight
+
+from mockrelay import MockRelay
 from relaystate import RelayState
 from signalboard import SignalBoard
 from signalcollection import SignalCollection
 from signalstate import SignalState
-
-from main.python.signallight import SignalLight
-from mockrelay import MockRelay
 
 
 class SignalBoardTests(unittest.TestCase):

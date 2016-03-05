@@ -1,7 +1,7 @@
 import unittest
 
-from main.python.relayboard import *
 from mockrelay import *
+from relayboard import *
 
 
 # Here's our "unit tests".

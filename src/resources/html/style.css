@@ -1,0 +1,71 @@
+
+body, input, textarea, select, button {
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "liga", "kern";
+    text-rendering: optimizelegibility;
+}
+
+
+body {
+    font-family: "Helvetica","Arial",sans-serif;
+    margin: auto;
+    width: 310px;
+    margin: 0 auto;
+    text-align:center;
+}
+
+h1 {
+    padding-top: 30px;
+    padding-bottom: 20px;
+    color: #11111;
+    font-size: 52px;
+    font-weight: 200;
+    line-height:54px;
+    text-align: center;
+}
+
+.widget div{
+    width: 110px;
+    height: 120px;
+    background: #f7f7f7;
+    border: 1px solid #F0F0F0;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 5px;
+}
+
+.widget .overview {
+    padding-left: 93px;
+    padding-right: 94px;
+}
+
+.widget .summary {
+    display: inline-block;
+}
+.widget div span {
+    display: block;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    text-align: center;
+    line-height: 100px;
+}
+
+.widget div button {
+    margin: 10px;
+}
+.red {
+    background: red;
+    color: #EEE;
+}
+
+.green {
+    background: #00a904;
+    color: #EEE;
+}
+
+.off {
+    background: #f7f7f7;
+    color: #000;
+}

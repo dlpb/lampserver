@@ -1,15 +1,16 @@
-from twisted.web import resource
-from twisted.web.server import Site
-from twisted.web.resource import Resource
-from twisted.internet import reactor
 import json
 
+from twisted.internet import reactor
+from twisted.web import resource
+from twisted.web.resource import Resource
+from twisted.web.server import Site
 from twisted.web.static import File
 
-from main.python.relay import Relay
-from signallight import SignalLight
-from signalcollection import SignalCollection
+from relay import Relay
+from relaystate import RelayState
 from signalboard import SignalBoard
+from signalcollection import SignalCollection
+from signallight import SignalLight
 
 
 class SignalSummaryResources(resource.Resource):
@@ -137,9 +138,28 @@ class SignalLightResources(resource.Resource):
             })
 
 
+class MockRelay:
+
+    __state__ = RelayState.off
+
+    def __init__(self, number = 0):
+        #     do nothring
+        ()
+
+    def on(self):
+        self.__state__ = RelayState.on
+
+    def off(self):
+        self.__state__ = RelayState.off
+
+    def state(self):
+        return self.__state__
+
 root = Resource()
-signals = SignalBoard(SignalCollection(SignalLight(Relay()), SignalLight(Relay())),
-                      SignalCollection(SignalLight(Relay()), SignalLight(Relay())))
+# signals = SignalBoard(SignalCollection(SignalLight(Relay(0)), SignalLight(Relay(1))),
+#                       SignalCollection(SignalLight(Relay(2)), SignalLight(Relay(3))))
+signals = SignalBoard(SignalCollection(SignalLight(MockRelay(0)), SignalLight(MockRelay(1))),
+                      SignalCollection(SignalLight(MockRelay(2)), SignalLight(MockRelay(3))))
 
 signal = SignalSummaryResources(signals)
 redSignal = SignalColourResources(signals.red)
@@ -156,7 +176,7 @@ greenSignal.putChild("pigear", SignalLightResources(signals.green.pigear))
 
 root.putChild("signal", signal)
 
-root.putChild("", File("../resources/html"))
+root.putChild("", File("resources/html"))
 
 factory = Site(root)
 reactor.listenTCP(8880, factory)

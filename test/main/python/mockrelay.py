@@ -1,4 +1,4 @@
-from main.python.relaystate import RelayState
+from relaystate import RelayState
 
 
 class MockRelay:
