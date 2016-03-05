@@ -10,6 +10,10 @@ from signalstate import SignalState
 
 class SignalBoardTests(unittest.TestCase):
 
+    def testWhenCreatingSignalBoard_canNameBoard(self):
+        signals = SignalBoard(None, None, "SomeFancyName")
+        self.assertEqual(signals.name, "SomeFancyName")
+
     def testWhenCreatingSignalBoard_redLightsAreOff(self):
         red = SignalLight(MockRelay())
         green = None

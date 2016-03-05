@@ -28,6 +28,7 @@ class SignalAPI:
             })
         else:
             return json.dumps({
+                'name': self.signals.name,
                 'red': {
                     'state': self.signals.red.state().name
                 },
