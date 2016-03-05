@@ -16,7 +16,9 @@ class RelayBoardTests(unittest.TestCase):
 
         expected = json.dumps({
             'red': { 'state': 'off'},
-            'green': { 'state': 'off'}
+            'green': { 'state': 'off'},
+            'hypermedia': ['/api', 'red', 'green']
+
         })
 
         self.assertEqual(resource.json(), expected)
@@ -29,7 +31,9 @@ class RelayBoardTests(unittest.TestCase):
 
         expected = json.dumps({
             'red': { 'state': 'on'},
-            'green': { 'state': 'off'}
+            'green': { 'state': 'off'},
+            'hypermedia': ['/api', 'red', 'green']
+
         })
 
         self.assertEqual(resource.json(), expected)
@@ -42,10 +46,19 @@ class RelayBoardTests(unittest.TestCase):
 
         expected = json.dumps({
             'red': { 'state': 'off'},
-            'green': { 'state': 'on'}
+            'green': { 'state': 'on'},
+            'hypermedia': ['/api', 'red', 'green']
         })
 
         self.assertEqual(resource.json(), expected)
+
+    def test_whenReturningJsonForSignals_hypermediaIsIncluded(self):
+        signals = SignalBoard(MockRelay(), MockRelay())
+        resource = SignalAPI(signals)
+
+        expected = """"hypermedia": ["/api", "red", "green"]"""
+
+        self.assertTrue(resource.json().__contains__(expected))
 
 def main():
     unittest.main()

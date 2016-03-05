@@ -16,5 +16,6 @@ class SignalAPI:
             },
             'green': {
                 'state': self.signals.green.state().name
-            }
+            },
+            'hypermedia': ['/api', 'red', 'green']
         })
