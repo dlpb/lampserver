@@ -7,7 +7,8 @@ from mockrelay import *
 
 # Here's our "unit tests".
 from signalboard import SignalBoard
-from signalstate import SignalColour
+from signallight import SignalLight
+from signalstate import SignalColour, SignalState
 
 
 class RelayBoardTests(unittest.TestCase):
@@ -21,14 +22,14 @@ class RelayBoardTests(unittest.TestCase):
         self.assertEqual(expected, actual.name)
 
     def test_givenASignalAPIWithAnOffSignal_itCanReturnJsonWithTheStateOfTheSignal(self):
-        resource = SignalAPI(SignalBoard(MockRelay(), MockRelay()))
+        resource = SignalAPI(SignalBoard(SignalLight(MockRelay()), SignalLight(MockRelay())))
 
         actual = decode_signal_api_response(resource.json())
         self.assertEqual(actual.red, {'state': 'off'})
         self.assertEqual(actual.green, {'state': 'off'})
 
     def test_givenASignalAPI_whenTurningOnRedSignal_jsonIsUpdated(self):
-        signals = SignalBoard(MockRelay(), MockRelay())
+        signals = SignalBoard(SignalLight(MockRelay()), SignalLight(MockRelay()))
         resource = SignalAPI(signals)
 
         signals.red.on()
@@ -39,7 +40,7 @@ class RelayBoardTests(unittest.TestCase):
 
 
     def test_givenASignalAPI_whenTurningOnGreenSignal_jsonIsUpdated(self):
-        signals = SignalBoard(MockRelay(), MockRelay())
+        signals = SignalBoard(SignalLight(MockRelay()), SignalLight(MockRelay()))
         resource = SignalAPI(signals)
 
         signals.green.on()
@@ -49,7 +50,7 @@ class RelayBoardTests(unittest.TestCase):
         self.assertEqual(actual.green, {'state': 'on'})
 
     def test_whenReturningJsonForSignals_hypermediaIsIncluded(self):
-        signals = SignalBoard(MockRelay(), MockRelay())
+        signals = SignalBoard(SignalLight(MockRelay()), SignalLight(MockRelay()))
         resource = SignalAPI(signals)
 
         expected = ["/api", "red", "green"]
@@ -58,7 +59,7 @@ class RelayBoardTests(unittest.TestCase):
         self.assertEqual(expected, actual.hypermedia)
 
     def test_whenReturningJsonForOneSignal_jsonIsReturned(self):
-        signals = SignalBoard(MockRelay(), MockRelay())
+        signals = SignalBoard(SignalLight(MockRelay()), SignalLight(MockRelay()))
         resource = SignalAPI(signals)
 
         actual = decode_signal_api_response(resource.json(SignalColour.red))
@@ -67,7 +68,7 @@ class RelayBoardTests(unittest.TestCase):
 
 
     def test_whenReturningJsonForRedSignalAndTurningItOn_correctJsonIsReturned(self):
-        signals = SignalBoard(MockRelay(), MockRelay())
+        signals = SignalBoard(SignalLight(MockRelay()), SignalLight(MockRelay()))
         resource = SignalAPI(signals)
 
         signals.red.on()
@@ -77,7 +78,7 @@ class RelayBoardTests(unittest.TestCase):
         self.assertEqual(actual.state, 'on')
 
     def test_whenReturningJsonForGreenSignalAndTurningItOn_correctJsonIsReturned(self):
-        signals = SignalBoard(MockRelay(), MockRelay())
+        signals = SignalBoard(SignalLight(MockRelay()), SignalLight(MockRelay()))
         resource = SignalAPI(signals)
 
         signals.green.on()
@@ -87,7 +88,7 @@ class RelayBoardTests(unittest.TestCase):
         self.assertEqual(actual.state, 'on')
 
     def test_whenReturningJsonForOneSignal_hypermediaIsIncluded(self):
-        signals = SignalBoard(MockRelay(), MockRelay())
+        signals = SignalBoard(SignalLight(MockRelay()), SignalLight(MockRelay()))
         resource = SignalAPI(signals)
 
         expected = ['/api']
@@ -95,6 +96,13 @@ class RelayBoardTests(unittest.TestCase):
 
         self.assertEqual(expected, actual.hypermedia)
 
+    def test_whenTurningRedLampOn_lampIsTurnedOn(self):
+        signals = SignalBoard(SignalLight(MockRelay()), SignalLight(MockRelay()))
+        resource = SignalAPI(signals)
+
+        self.assertEqual(SignalState.off, signals.green.state())
+        resource.set(SignalColour.green, SignalState.on)
+        self.assertEqual(SignalState.on, signals.green.state())
 
 class SignalAPIData(object):
     def __init__(self, name, red, green, hypermedia):

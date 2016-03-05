@@ -38,4 +38,7 @@ class SignalAPI:
                 'hypermedia': ['/api', 'red', 'green']
             })
 
+    def set(self, target, state):
+        self.signals.green.on()
+
 
